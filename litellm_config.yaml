@@ -1,0 +1,82 @@
+model_list:
+  # ── Exact names Claude Code sends ─────────────────────
+  - model_name: claude-opus-4-8
+    litellm_params:
+      model: groq/qwen/qwen3-32b
+      api_key: os.environ/GROQ_API_KEY
+
+  - model_name: claude-opus-4-7
+    litellm_params:
+      model: groq/qwen/qwen3-32b
+      api_key: os.environ/GROQ_API_KEY
+
+  - model_name: claude-opus-4-6
+    litellm_params:
+      model: groq/qwen/qwen3-32b
+      api_key: os.environ/GROQ_API_KEY
+
+  - model_name: claude-sonnet-4-6
+    litellm_params:
+      model: groq/llama-3.3-70b-versatile
+      api_key: os.environ/GROQ_API_KEY
+
+  - model_name: claude-haiku-4-5
+    litellm_params:
+      model: groq/llama-3.1-8b-instant
+      api_key: os.environ/GROQ_API_KEY
+
+  - model_name: claude-haiku-4-5-20251001
+    litellm_params:
+      model: groq/llama-3.1-8b-instant
+      api_key: os.environ/GROQ_API_KEY
+
+  # ── OpenRouter fallbacks ───────────────────────────────
+  - model_name: or-gpt-oss-120b
+    litellm_params:
+      model: openrouter/openai/gpt-oss-120b:free
+      api_key: os.environ/OPENROUTER_API_KEY
+      api_base: https://openrouter.ai/api/v1
+
+  - model_name: or-nemotron
+    litellm_params:
+      model: openrouter/nvidia/nemotron-3-super-120b-a12b:free
+      api_key: os.environ/OPENROUTER_API_KEY
+      api_base: https://openrouter.ai/api/v1
+
+  - model_name: or-auto-free
+    litellm_params:
+      model: openrouter/openrouter/free
+      api_key: os.environ/OPENROUTER_API_KEY
+      api_base: https://openrouter.ai/api/v1
+
+litellm_settings:
+  drop_params: true
+  fallbacks:
+    - claude-opus-4-8:
+        - or-gpt-oss-120b
+        - or-nemotron
+        - or-auto-free
+    - claude-opus-4-7:
+        - or-gpt-oss-120b
+        - or-nemotron
+        - or-auto-free
+    - claude-opus-4-6:
+        - or-gpt-oss-120b
+        - or-nemotron
+        - or-auto-free
+    - claude-sonnet-4-6:
+        - or-gpt-oss-120b
+        - or-auto-free
+    - claude-haiku-4-5:
+        - or-auto-free
+    - claude-haiku-4-5-20251001:
+        - or-auto-free
+    # Fallbacks for the fallbacks
+    - or-gpt-oss-120b:
+        - or-nemotron
+        - or-auto-free
+    - or-nemotron:
+        - or-auto-free
+  num_retries: 3
+  retry_after: 5
+  allowed_fails: 1

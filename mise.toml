@@ -1,0 +1,27 @@
+[tools]
+python = "3.12"
+uv = "latest"
+
+[env]
+ANTHROPIC_BASE_URL = "http://localhost:4000"
+ANTHROPIC_AUTH_TOKEN = "freecc"
+ANTHROPIC_DEFAULT_OPUS_MODEL = "claude-opus"
+ANTHROPIC_DEFAULT_SONNET_MODEL = "claude-sonnet"
+ANTHROPIC_DEFAULT_HAIKU_MODEL = "claude-haiku"
+CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1"
+
+[tasks.install]
+description = "Install LiteLLM as a uv tool"
+run = "uv tool install litellm[proxy]"
+
+[tasks.proxy]
+description = "Start LiteLLM proxy"
+run = "uvx litellm --config litellm_config.yaml --port 4000"
+
+[tasks.claude]
+description = "Launch Claude Code via NIM proxy"
+run = "claude"
+
+[tasks.status]
+description = "Check proxy health"
+run = "powershell -File scripts/status.ps1"
